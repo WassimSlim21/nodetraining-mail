@@ -6,9 +6,23 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
 const sendEmail = require("./config/sendmail");
 
 var app = express();
+
+
+/* CORS Setup*/
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+  
+   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  
+  next();
+});
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
