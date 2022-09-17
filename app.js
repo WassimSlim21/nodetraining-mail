@@ -40,7 +40,7 @@ app.use('/users', usersRouter);
 app.post('/email', async(req, res)=>{
 try{
   console.log("Sending mail ...");
-  await sendEmail("wassimslim18@gmail.com", req.body.subject,req.body.content);
+  await sendEmail(req.body.email, req.body.subject,req.body.content);
   res.status(200).json({ msg: "password reset link sent to your email account" });
 }
 
