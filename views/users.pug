@@ -1,0 +1,19 @@
+doctype html
+
+html(lang='en')
+
+
+  body
+    style
+      include /stylesheets/style.css
+    table.table.table-striped
+      tr
+        th id
+        th userName
+        th age
+
+      each u in users
+        tr
+          td= u.id
+          td= u.username
+          td= u.age

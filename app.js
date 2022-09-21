@@ -1,13 +1,14 @@
 var createError = require('http-errors');
-var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var productRouter = require('./routes/product');
 
 const sendEmail = require("./config/sendmail");
+var express = require('express');
 
 var app = express();
 
@@ -27,6 +28,8 @@ app.use((req, res, next) => {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+app.locals.basedir = path.join(__dirname, 'public');
+
 require("dotenv").config();
 
 app.use(logger('dev'));
@@ -35,8 +38,42 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
+ // GET method route
+ app.get('/', function (req, res, next) {
+  res.send('GET request to the homepage');
+})
+
+
+
+// POST method route 
+app.post('/', function (req, res) {
+  res.send('POST request to the homepage');
+})
+
+
+//Middleware function to log request protocol
+app.use('/things', function(req, res, next){
+  console.log("A request for things received at " + Date.now());
+  next();
+});
+
+
+// Route handler that sends the response
+app.get('/things', function(req, res, next){
+  console.log("A request for things Handler at " + Date.now());
+  next()
+  // res.send('Things');
+});
+
+app.get('/things', function(req, res, next){
+  console.log("A request for things 2 Handler at " + Date.now());
+  res.send('Things 2');
+});
+
 app.use('/users', usersRouter);
+app.use('/products', productRouter);
+
 app.post('/email', async(req, res)=>{
 try{
   console.log("Sending mail ...");
@@ -52,6 +89,7 @@ try{
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  console.log("into error handler");
   next(createError(404));
 });
 
@@ -63,6 +101,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
+  // console.log(err);
   res.render('error');
 });
 

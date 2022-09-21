@@ -31,9 +31,8 @@ var users = [
 
 exports.getAllUsers = (req,res,next) =>{
     console.log("get Users");
-    res.status(200).json({msg: 'Get user successfully', data: users});
-    next();
-
+    // res.status(200).json({msg: 'Get user successfully', data: users});
+return  res.render('users', { users: users });
 }
 
 exports.addUser = (req,res,next) =>{
